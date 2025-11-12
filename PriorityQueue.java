@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   PAMELA MENSAH / 002
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -150,10 +150,14 @@ class PriorityQueue<E, P> {
      */
 
     public Node add(E e, P priority) {
+        int index = tree.size();
+        Node node = new Node(e, priority, index);
+        tree.add(node);
+        pullUp(index);
 
-        // YOUR CODE GOES HERE
-        return null;
+        return node;
     }
+
 
 
     /**
@@ -167,10 +171,20 @@ class PriorityQueue<E, P> {
      */
 
     public boolean contains(E e) {
-
-        // ADD YOUR CODE HERE
+        for (Node node : tree) {
+            if (e == null) {
+                if (node.value == null) {
+                    return true;
+                }
+            } else {
+                if (e.equals(node.value)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
+
 
 
     /**

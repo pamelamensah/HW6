@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   PAMELA MENSAH / 002
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -63,13 +63,29 @@ public class ProblemSolutions {
      * returning the 0 if queue is empty else return pq.peek().
      */
 
-  public static int lastBoulder(int[] boulders) {
+    public static int lastBoulder(int[] boulders) {
+        java.util.PriorityQueue<Integer> pq =
+                new java.util.PriorityQueue<Integer>(java.util.Collections.reverseOrder());
 
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
-  }
+        for (int w : boulders) {
+            pq.offer(w);
+        }
+
+        while (pq.size() > 1) {
+            int y = pq.poll(); 
+            int x = pq.poll(); 
+
+            if (y != x) {
+                pq.offer(y - x);
+            }
+        }
+        if (pq.isEmpty()) {
+            return 0;
+        } else {
+            return pq.peek();
+        }
+    }
+
 
 
     /**
@@ -90,13 +106,32 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
+        ArrayList<String> copy = new ArrayList<String>(input);
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        java.util.Collections.sort(copy);
 
+        ArrayList<String> result = new ArrayList<String>();
+
+        int n = copy.size();
+        int i = 0;
+
+        while (i < n) {
+            String current = copy.get(i);
+            int count = 1;
+            int j = i + 1;
+            while (j < n && copy.get(j).equals(current)) {
+                count++;
+                j++;
+            }
+            if (count > 1) {
+                result.add(current);
+            }
+
+            i = j;
+        }
+        return result;
     }
+
 
 
     /**
@@ -130,10 +165,43 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> pair(int[] input, int k) {
+        int[] arr = java.util.Arrays.copyOf(input, input.length);
+        java.util.Arrays.sort(arr);
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        ArrayList<String> result = new ArrayList<String>();
+
+        int i = 0;
+        int j = arr.length - 1;
+
+        while (i < j) {
+            int sum = arr[i] + arr[j];
+
+            if (sum == k) {
+                int a = arr[i];
+                int b = arr[j];
+
+                // a <= b because array is sorted
+                result.add("(" + a + ", " + b + ")");
+
+                // Move i forward, skipping duplicates
+                int oldI = arr[i];
+                while (i < j && arr[i] == oldI) {
+                    i++;
+                }
+
+                // Move j backward, skipping duplicates
+                int oldJ = arr[j];
+                while (i < j && arr[j] == oldJ) {
+                    j--;
+                }
+
+            } else if (sum < k) {
+                i++;
+            } else { // sum > k
+                j--;
+            }
+        }
+        return result;
     }
+
 }
